@@ -1,10 +1,9 @@
 package io.github.nomeyho.contour.model;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class Point implements Serializable {
-
-    private static final double PRECISION = 10e-6;
     
     private double x;
     private double y;
@@ -34,15 +33,18 @@ public class Point implements Serializable {
         this.y = y;
     }
 
-    public boolean equal(final Point point) {
-        if (point == null) {
+    @Override
+    public int hashCode() {
+        return Objects.hash(x, y);
+    }
+
+    @Override
+    public boolean equals(final Object point) {
+        if (!(point instanceof Point)) {
             return false;
         }
 
-        final double dx = this.x - point.x;
-        final double dy = this.y - point.y;
-
-        return (dx * dx + dy * dy) < PRECISION;
+        return x == ((Point) point).x && y == ((Point) point).y;
     }
 
     @Override

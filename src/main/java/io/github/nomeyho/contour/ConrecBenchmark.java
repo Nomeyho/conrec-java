@@ -2,6 +2,7 @@ package io.github.nomeyho.contour;
 
 import com.google.common.base.Stopwatch;
 import io.github.nomeyho.contour.conrec.Conrec;
+import io.github.nomeyho.contour.model.Contour;
 import io.github.nomeyho.contour.model.Level;
 import io.github.nomeyho.contour.parser.Data;
 import io.github.nomeyho.contour.parser.DataParser;
@@ -27,7 +28,7 @@ public class ConrecBenchmark {
     
     public static void main(String[] args) throws Exception {
         final Path dir = Paths.get("/Users/vanberst/Documents/Workspace/Web/contour-benchmark/src/main/resources/data");
-        final List<Path> paths = Files.list(dir).collect(Collectors.toList());
+        final List<Path> paths = Files.list(dir).sorted().skip(0).collect(Collectors.toList());
         final List<Duration> durations = new ArrayList<>();
 
         for (final Path path : paths) {
@@ -44,7 +45,7 @@ public class ConrecBenchmark {
         final Data data = DataParser.read(path);
         
         final List<Level> levels = Conrec.contour(data.getX(), data.getY(), data.getZ(), levels(data));
-        System.out.println("-> Found " + levels.stream().mapToInt(l -> l.getContours().size()).sum() + " contours");
+        System.out.println("-> Found " + levels.stream().mapToInt(l -> l.getContours().size()).sum() + " contours in " + timer.elapsed().toMillis() + "ms");
         
         return timer.elapsed();
     }

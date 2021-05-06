@@ -1,24 +1,29 @@
 package io.github.nomeyho.contour.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Level implements Serializable {
 
     private double z;
-    private ArrayList<Contour> contours;
+    private LinkedHashSet<Contour> contours;
+    private Map<Point, Contour> openContourStarts;
+    private Map<Point, Contour> openContourEnds;
 
     public Level(final double z) {
         this.z = z;
-        this.contours = new ArrayList<>();
+        this.contours = new LinkedHashSet<>();
+        this.openContourStarts = new HashMap<>();
+        this.openContourEnds = new HashMap<>();
     }
 
     public double getZ() {
         return this.z;
     }
 
-    public ArrayList<Contour> getContours() {
-        return this.contours;
+    public List<Contour> getContours() {
+        return new ArrayList<>(this.contours);
     }
 
     public void addSegment(final Point a, final Point b) {
@@ -26,39 +31,20 @@ public class Level implements Serializable {
         Contour matchB = null;
         boolean prependA = false;
         boolean prependB = false;
-        int indexMatchA = 0;
-        int indexMatchB = 0;
 
         //* 1. Try to find a match in the existing contours */
-        for (int i = 0; i < this.contours.size(); ++i) {
-            final Contour contour = this.contours.get(i);
+        if (openContourStarts.containsKey(a)) {
+            matchA = openContourStarts.get(a);
+            prependA = true;
+        } else if (openContourEnds.containsKey(a)) {
+            matchA = openContourEnds.get(a);
+        }
 
-            // No match for 'a' yet
-            if (matchA == null) {
-                if (contour.getStart().equal(a)) {
-                    matchA = contour;
-                    prependA = true;
-                    indexMatchA = i;
-                } else if (contour.getEnd().equal(a)) {
-                    matchA = contour;
-                    indexMatchA = i;
-                }
-            }
-            // Not match for 'b' yet
-            if (matchB == null) {
-                if (contour.getStart().equal(b)) {
-                    matchB = contour;
-                    prependB = true;
-                    indexMatchB = i;
-                } else if (contour.getEnd().equal(b)) {
-                    matchB = contour;
-                    indexMatchB = i;
-                }
-            }
-            // Both matched, not need to continue searching
-            if (matchA != null && matchB != null) {
-                break;
-            }
+        if (openContourStarts.containsKey(b)) {
+            matchB = openContourStarts.get(b);
+            prependB = true;
+        } else if (openContourEnds.containsKey(b)) {
+            matchB = openContourEnds.get(b);
         }
 
         /* 2. Add the new points to the contour */
@@ -71,29 +57,49 @@ public class Level implements Serializable {
                 contour = new Contour();
                 contour.addBack(a);
                 contour.addBack(b);
-                this.contours.add(contour);
+                contours.add(contour);
+                openContourStarts.put(a, contour);
+                openContourEnds.put(b, contour);
                 break;
             // a matched, b did not - thus b extends sequence ma
             case 1:
-                if (prependA)
+                if (prependA) {
+                    // b becomes the new start
                     matchA.addFront(b);
-                else
+                    openContourStarts.remove(a);
+                    openContourStarts.put(b, matchA);
+                } else {
+                    // b becomes the new end
                     matchA.addBack(b);
+                    openContourEnds.remove(a);
+                    openContourEnds.put(b, matchA);
+                }
                 break;
             // b matched, a did not - thus a extends sequence mb
             case 2:
-                if (prependB)
+                if (prependB) {
+                    // a becomes the new start
                     matchB.addFront(a);
-                else
+                    openContourStarts.remove(b);
+                    openContourStarts.put(a, matchB);
+                } else {
                     matchB.addBack(a);
+                    openContourEnds.remove(b);
+                    openContourEnds.put(a, matchB);
+                }
                 break;
             // both matched, can merge sequences
             case 3:
+                openContourStarts.remove(matchA.getStart());
+                openContourStarts.remove(matchB.getStart());
+                openContourEnds.remove(matchA.getEnd());
+                openContourEnds.remove(matchB.getEnd());
+                
                 // Contour are the same: close the path
                 if (matchA == matchB) {
                     /* TODO: Only accept contour with enough points
                     if (matchA.getPoints().size() < SpectraConfiguration.MIN_CONTOUR_SIZE) {
-                        this.contours.remove(indexMatchA);
+                        contours.remove(indexMatchA);
                     }
                     */
                     matchA.setClosed(true);
@@ -111,13 +117,17 @@ public class Level implements Serializable {
                         matchA.reverse();
                     case 1: // head-tail
                         matchB.concat(matchA);
-                        this.contours.remove(indexMatchA);
+                        openContourStarts.put(matchB.getStart(), matchB);
+                        openContourEnds.put(matchB.getEnd(), matchB);
+                        contours.remove(matchA);
                         break;
                     case 3: // head-head
                         matchA.reverse();
                     case 2: // tail-head
                         matchA.concat(matchB);
-                        this.contours.remove(indexMatchB);
+                        openContourStarts.put(matchA.getStart(), matchA);
+                        openContourEnds.put(matchA.getEnd(), matchA);
+                        contours.remove(matchB);
                         break;
                 }
                 break;
