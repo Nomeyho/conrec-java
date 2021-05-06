@@ -2,7 +2,7 @@ package io.github.nomeyho.contour.utils;
 
 import io.github.nomeyho.contour.parser.Data;
 
-public class LevelUtils {
+public final class LevelUtils {
 
     private LevelUtils() {
 
@@ -20,7 +20,7 @@ public class LevelUtils {
             }
         }
 
-        double[] levels = new double[100];
+        double[] levels = new double[10];
         double delta = (max - min) / levels.length;
         for (int i = 0; i < levels.length; ++i) {
             levels[i] = min + delta * i;
