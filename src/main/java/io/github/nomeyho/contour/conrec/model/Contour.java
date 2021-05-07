@@ -1,12 +1,12 @@
-package io.github.nomeyho.contour.model;
+package io.github.nomeyho.contour.conrec.model;
 
 import java.io.Serializable;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
 
 public class Contour implements Serializable {
-    private LinkedList<Point> points;
+    private final LinkedList<Point> points;
     private boolean closed;
 
     public Contour() {
@@ -25,6 +25,17 @@ public class Contour implements Serializable {
     public void concat(final Contour contour) {
         if (contour != null) {
             this.points.addAll(contour.getPoints());
+        }
+    }
+
+    public void concatReversed(final Contour contour) {
+        if (contour != null) {
+            final int size = contour.points.size();
+            final ListIterator<Point> it = contour.getPoints().listIterator(size);
+
+            while (it.hasPrevious()) {
+                this.points.add(it.previous());
+            }
         }
     }
 
@@ -54,10 +65,6 @@ public class Contour implements Serializable {
 
     public List<Point> getPoints() {
         return this.points;
-    }
-
-    public void reverse() {
-        Collections.reverse(this.points);
     }
 
     @Override

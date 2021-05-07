@@ -7,7 +7,7 @@ public final class LevelUtils {
     private LevelUtils() {
 
     }
-    
+
     public static double[] levels(final Data data) {
         double[][] z = data.getZ();
         double min = Double.MAX_VALUE;
@@ -25,8 +25,7 @@ public final class LevelUtils {
         for (int i = 0; i < levels.length; ++i) {
             levels[i] = min + delta * i;
         }
-        
-        //return new double[] { levels[4] }; // TODO
+
         return levels;
     }
 }

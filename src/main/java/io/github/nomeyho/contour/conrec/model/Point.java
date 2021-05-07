@@ -1,10 +1,10 @@
-package io.github.nomeyho.contour.model;
+package io.github.nomeyho.contour.conrec.model;
 
 import java.io.Serializable;
 import java.util.Objects;
 
 public class Point implements Serializable {
-    
+
     private double x;
     private double y;
 
