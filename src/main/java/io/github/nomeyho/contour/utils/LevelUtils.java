@@ -20,7 +20,7 @@ public final class LevelUtils {
             }
         }
 
-        double[] levels = new double[100];
+        double[] levels = new double[20];
         double delta = (max - min) / levels.length;
         for (int i = 0; i < levels.length; ++i) {
             levels[i] = min + delta * i;

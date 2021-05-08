@@ -6,53 +6,80 @@ import java.util.List;
 import java.util.ListIterator;
 
 public class Contour implements Serializable {
-    private final LinkedList<Point> points;
+    private LinkedList<Point> points;
     private boolean closed;
 
     public Contour() {
-        this.points = new LinkedList<>();
-        this.closed = false;
+        points = new LinkedList<>();
+        closed = false;
     }
 
-    public void addBack(final Point point) {
-        this.points.addLast(point);
+    public void addFirst(final Point point) {
+        if (point == null) {
+            return;
+        }
+
+        points.addFirst(point);
     }
 
-    public void addFront(final Point point) {
-        this.points.addFirst(point);
+    public void addLast(final Point point) {
+        if (point == null) {
+            return;
+        }
+        
+        points.addLast(point);
     }
 
-    public void concat(final Contour contour) {
-        if (contour != null) {
-            this.points.addAll(contour.getPoints());
+    // [1, 2, 3] + [4, 5] => [1, 2, 3, 4, 5]
+    public void merge(final Contour contour) {
+        if (contour == null) {
+            return;
+        }
+
+        points.addAll(contour.getPoints());
+    }
+
+    // [1, 2, 3] + [4, 5] => [1, 2, 3, 5, 4]
+    public void mergeReversed(final Contour contour) {
+        if (contour == null) {
+            return;
+        }
+        
+        final int size = contour.getPoints().size();
+        final ListIterator<Point> it = contour.getPoints().listIterator(size);
+        
+        while (it.hasPrevious()) {
+            points.addLast(it.previous());
         }
     }
 
-    public void concatReversed(final Contour contour) {
-        if (contour != null) {
-            final int size = contour.points.size();
-            final ListIterator<Point> it = contour.getPoints().listIterator(size);
-
-            while (it.hasPrevious()) {
-                this.points.add(it.previous());
-            }
+    // [1, 2, 3] + [4, 5] => [3, 2, 1, 4, 5]
+    public void reverseAndMerge(final Contour contour) {
+        if (contour == null) {
+            return;
         }
+
+        for (final Point point : points) {
+            contour.points.addFirst(point);
+        }
+        
+        points = contour.points;
     }
 
     public Point getStart() {
-        if (this.points.isEmpty()) {
+        if (points.isEmpty()) {
             return null;
         }
 
-        return this.points.getFirst();
+        return points.getFirst();
     }
 
     public Point getEnd() {
-        if (this.points.isEmpty()) {
+        if (points.isEmpty()) {
             return null;
         }
 
-        return this.points.getLast();
+        return points.getLast();
     }
 
     public boolean isClosed() {
@@ -64,7 +91,7 @@ public class Contour implements Serializable {
     }
 
     public List<Point> getPoints() {
-        return this.points;
+        return points;
     }
 
     @Override

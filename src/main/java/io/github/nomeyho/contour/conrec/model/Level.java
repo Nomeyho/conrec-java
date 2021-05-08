@@ -5,10 +5,10 @@ import java.util.*;
 
 public class Level implements Serializable {
 
-    private double z;
-    private Set<Contour> contours;
-    private Map<Point, Contour> contourStarts;
-    private Map<Point, Contour> contourEnds;
+    private final double z;
+    private final Set<Contour> contours;
+    private final Map<Point, Contour> contourStarts;
+    private final Map<Point, Contour> contourEnds;
 
     public Level(final double z) {
         this.z = z;
@@ -60,8 +60,8 @@ public class Level implements Serializable {
 
     private void newContour(final Point a, final Point b) {
         final Contour contour = new Contour();
-        contour.addBack(a);
-        contour.addBack(b);
+        contour.addLast(a);
+        contour.addLast(b);
         contours.add(contour);
         contourStarts.put(a, contour);
         contourEnds.put(b, contour);
@@ -70,17 +70,17 @@ public class Level implements Serializable {
     private void appendSegment(final Point a, final Point b, final boolean prepend, final Contour contour) {
         if (prepend) {
             // b becomes the new start
-            contour.addFront(b);
+            contour.addFirst(b);
             contourStarts.remove(a);
             contourStarts.put(b, contour);
         } else {
             // b becomes the new end
-            contour.addBack(b);
+            contour.addLast(b);
             contourEnds.remove(a);
             contourEnds.put(b, contour);
         }
     }
-    
+
     private void mergeContour(final Contour contourA, final Contour contourB, final boolean prependA, final boolean prependB) {
         contourStarts.remove(contourA.getStart());
         contourStarts.remove(contourB.getStart());
@@ -90,32 +90,32 @@ public class Level implements Serializable {
         // Close path
         if (contourA == contourB) {
             contourA.setClosed(true);
-            contourA.addBack(contourA.getStart());
+            contourA.addLast(contourA.getStart());
             return;
         }
 
         // Merge contours
         if (prependA && prependB) {
             // head-head
-            contourA.concatReversed(contourB);
+            contourA.reverseAndMerge(contourB);
             contourStarts.put(contourA.getStart(), contourA);
             contourEnds.put(contourA.getEnd(), contourA);
             contours.remove(contourB);
         } else if (prependA && !prependB) {
             // head-tail
-            contourB.concat(contourA);
+            contourB.merge(contourA);
             contourStarts.put(contourB.getStart(), contourB);
             contourEnds.put(contourB.getEnd(), contourB);
             contours.remove(contourA);
         } else if (!prependA && prependB) {
             // tail-head
-            contourA.concat(contourB);
+            contourA.merge(contourB);
             contourStarts.put(contourA.getStart(), contourA);
             contourEnds.put(contourA.getEnd(), contourA);
             contours.remove(contourB);
         } else {
             // tail-tail
-            contourB.concatReversed(contourA);
+            contourB.mergeReversed(contourA);
             contourStarts.put(contourB.getStart(), contourB);
             contourEnds.put(contourB.getEnd(), contourB);
             contours.remove(contourA);
