@@ -1,7 +1,6 @@
-package io.github.nomeyho.contour.conrec;
+package io.github.nomeyho.contour.msquare;
 
 import com.google.common.base.Stopwatch;
-import io.github.nomeyho.contour.conrec.model.Level;
 import io.github.nomeyho.contour.parser.Data;
 import io.github.nomeyho.contour.parser.DataParser;
 
@@ -15,9 +14,8 @@ import java.util.stream.Collectors;
 
 import static io.github.nomeyho.contour.utils.LevelUtils.levels;
 
-public class ConrecBenchmark {
+public class MSquareBenchmark {
 
-    // LongSummaryStatistics{count=229, sum=39355, min=51, average=171.855895, max=1765} - 20 contours
     public static void main(String[] args) throws Exception {
         final Path dir = Paths.get("/Users/vanberst/Documents/Workspace/Web/contour-benchmark/src/main/resources/data");
         final List<Path> paths = Files.list(dir).sorted().collect(Collectors.toList());
@@ -36,8 +34,8 @@ public class ConrecBenchmark {
         final Stopwatch timer = Stopwatch.createStarted();
         final Data data = DataParser.read(path);
 
-        final List<Level> levels = Conrec.contour(data.getX(), data.getY(), data.getZ(), levels(data));
-        System.out.println("-> Found " + levels.stream().mapToInt(l -> l.getContours().size()).sum() + " contours in " + timer.elapsed().toMillis() + "ms");
+        MarchingSquare.contour(data.getX(), data.getY(), data.getZ(), levels(data));
+        System.out.println("-> Found " + 0 + " contours in " + timer.elapsed().toMillis() + "ms");
 
         return timer.elapsed();
     }

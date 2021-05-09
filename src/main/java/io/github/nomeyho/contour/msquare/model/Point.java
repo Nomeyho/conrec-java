@@ -1,35 +1,33 @@
-package io.github.nomeyho.contour.conrec.model;
+package io.github.nomeyho.contour.msquare.model;
 
 import java.util.Objects;
 
 public class Point {
 
-    private double x;
-    private double y;
+    private final double x;
+    private final double y;
+    private final double z;
 
     public Point() {
-        this(0, 0);
+        this(0, 0, 0);
     }
 
-    public Point(final double x, final double y) {
+    public Point(final double x, final double y, final double z) {
         this.x = x;
         this.y = y;
+        this.z = z;
     }
 
     public double getX() {
         return x;
     }
-
-    public void setX(final double x) {
-        this.x = x;
-    }
-
+    
     public double getY() {
         return y;
     }
-
-    public void setY(final double y) {
-        this.y = y;
+    
+    public double getZ() {
+        return z;
     }
 
     @Override
@@ -43,11 +41,11 @@ public class Point {
             return false;
         }
 
-        return x == ((Point) point).x && y == ((Point) point).y;
+        return x == ((Point) point).x && y == ((Point) point).y && z == ((Point) point).z;
     }
 
     @Override
     public String toString() {
-        return "(" + this.x + ", " + this.y + ")";
+        return "(" + x + ", " + y + "," + z + ")";
     }
 }
