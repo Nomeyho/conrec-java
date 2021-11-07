@@ -1,4 +1,4 @@
-package io.github.nomeyho.contour.conrec.model;
+package io.github.nomeyho.conrec.model;
 
 import java.io.Serializable;
 import java.util.LinkedList;
@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.ListIterator;
 
 public class Contour implements Serializable {
-    private LinkedList<Point> points;
+    private LinkedList<Point> points; // TODO try to make final, do not modify second contour! 
     private boolean closed;
 
     public Contour() {

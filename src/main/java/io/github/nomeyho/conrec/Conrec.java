@@ -1,7 +1,7 @@
-package io.github.nomeyho.contour.conrec;
+package io.github.nomeyho.conrec;
 
-import io.github.nomeyho.contour.conrec.model.Level;
-import io.github.nomeyho.contour.conrec.model.Point;
+import io.github.nomeyho.conrec.model.Level;
+import io.github.nomeyho.conrec.model.Point;
 
 import java.util.Arrays;
 import java.util.List;
@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
  * Adapted from:
  * http://paulbourke.net/papers/conrec/Conrec.java
  */
-public class Conrec {
+public final class Conrec {
 
     private static final int[][][] CASTAB = {
             {{0, 0, 8}, {0, 2, 5}, {7, 6, 9}},
@@ -21,8 +21,12 @@ public class Conrec {
     private static final int[] IM = {0, 1, 1, 0};
     private static final int[] JM = {0, 0, 1, 1};
 
+    private Conrec() {
+
+    }
+
     /**
-     * Contour is a contouring subroutine for rectangularily spaced data
+     * Contour rectangularily spaced data
      *
      * @param x      data matrix column coordinates
      * @param y      data matrix row coordinates
@@ -33,7 +37,7 @@ public class Conrec {
     public static List<Level> contour(double[] x, double[] y, double[][] z, double[] levels) {
         final List<Level> result = initLevels(levels);
         int m1, m2, m3;
-        int case_value;
+        int caseValue;
         double dMin, dMax;
         double x1 = 0, x2 = 0, y1 = 0, y2 = 0;
         int i, j, k, m;
@@ -79,9 +83,9 @@ public class Conrec {
                         } else {
                             m3 = 1;
                         }
-                        case_value = CASTAB[sh[m1] + 1][sh[m2] + 1][sh[m3] + 1];
-                        if (case_value != 0) {
-                            switch (case_value) {
+                        caseValue = CASTAB[sh[m1] + 1][sh[m2] + 1][sh[m3] + 1];
+                        if (caseValue != 0) {
+                            switch (caseValue) {
                                 case 1: // Line between vertices 1 and 2
                                     x1 = xh[m1];
                                     y1 = yh[m1];

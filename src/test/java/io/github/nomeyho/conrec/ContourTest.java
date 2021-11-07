@@ -1,5 +1,7 @@
-package io.github.nomeyho.contour.conrec.model;
+package io.github.nomeyho.conrec;
 
+import io.github.nomeyho.conrec.model.Contour;
+import io.github.nomeyho.conrec.model.Point;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -7,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class ContourTest {
 
     @Test
-    public void mergeTest() {
+    void mergeTest() {
         final Contour a = a();
         final Contour b = b();
 
@@ -16,7 +18,7 @@ class ContourTest {
     }
 
     @Test
-    public void mergeReversedTest() {
+    void mergeReversedTest() {
         final Contour a = a();
         final Contour b = b();
 
@@ -25,7 +27,7 @@ class ContourTest {
     }
 
     @Test
-    public void reverseAndMergeTest() {
+    void reverseAndMergeTest() {
         final Contour a = a();
         final Contour b = b();
 

@@ -1,9 +1,8 @@
-package io.github.nomeyho.contour.conrec.model;
+package io.github.nomeyho.conrec.model;
 
-import java.io.Serializable;
 import java.util.*;
 
-public class Level implements Serializable {
+public class Level {
 
     private final double z;
     private final Set<Contour> contours;
@@ -48,7 +47,7 @@ public class Level implements Serializable {
 
         // Add the new points to the contour
         if (contourA == null && contourB == null) {
-            newContour(a, b);
+            addNewContour(a, b);
         } else if (contourA != null && contourB == null) {
             appendSegment(a, b, prependA, contourA);
         } else if (contourA == null && contourB != null) {
@@ -58,7 +57,7 @@ public class Level implements Serializable {
         }
     }
 
-    private void newContour(final Point a, final Point b) {
+    private void addNewContour(final Point a, final Point b) {
         final Contour contour = new Contour();
         contour.addLast(a);
         contour.addLast(b);

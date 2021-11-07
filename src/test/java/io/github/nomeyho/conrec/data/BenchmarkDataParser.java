@@ -1,20 +1,25 @@
-package io.github.nomeyho.contour.parser;
+package io.github.nomeyho.conrec.data;
 
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-public class DataParser {
+public final class BenchmarkDataParser {
 
-    public static Data read(final Path path) {
+    private BenchmarkDataParser() {
+
+    }
+
+    public static BenchmarkData read(final Path path) {
         try {
             return readHelper(path);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    private static Data readHelper(final Path path) throws Exception {
+    private static BenchmarkData readHelper(final Path path) throws IOException {
         final byte[] bytes = Files.readAllBytes(path);
         final ByteBuffer buffer = ByteBuffer.wrap(bytes);
 
@@ -45,7 +50,6 @@ public class DataParser {
         }
 
         // z
-        final int lenZ = buffer.getInt();
         final double[][] z = new double[lenX][lenY];
         for (int i = 0; i < lenX; i++) {
             for (int j = 0; j < lenY; j++) {
@@ -53,7 +57,7 @@ public class DataParser {
             }
         }
 
-        return new Data(x, y, z);
+        return new BenchmarkData(x, y, z);
     }
 
 }
