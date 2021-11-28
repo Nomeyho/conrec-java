@@ -16,10 +16,12 @@ import java.util.List;
 import java.util.LongSummaryStatistics;
 import java.util.stream.Stream;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 
 class BenchmarkTest {
 
-    private static final Path TEST_DATA_DIR = Paths.get("src/test/resources/benchmark-data");
+    private static final Path TEST_DATA_CSV = Paths.get("src/test/resources/benchmark-data.csv");
     private static final int NUMBER_LEVELS = 20;
     private static LongSummaryStatistics stats;
     private static Stopwatch globalStopwatch;
@@ -49,23 +51,35 @@ class BenchmarkTest {
 
     @ParameterizedTest
     @MethodSource("testData")
-    void benchmark(BenchmarkData data) {
+    void benchmark(BenchmarkData data, int expectedNumberContours) {
         final List<ConrecLevel> levels = Conrec.contour(data.getX(), data.getY(), data.getZ(), data.levels(NUMBER_LEVELS));
-        log("[" + data.getFilename() + "] Found " + countContours(levels) + " contours in " + testStopwatch.elapsed().toMillis() + "ms");
+        final int numberContours = numberContours(levels);
+        log("[" + data.getFilename() + "] Found " + numberContours + " contours in " + testStopwatch.elapsed().toMillis() + "ms");
+        assertEquals(expectedNumberContours, numberContours);
     }
 
     private static Stream<Arguments> testData() throws Exception {
-        return Files.list(TEST_DATA_DIR)
-                .sorted()
-                .map(BenchmarkDataParser::read)
-                .map(Arguments::of);
+        return Files.readAllLines(TEST_DATA_CSV)
+                .stream()
+                .skip(1)
+                .map(BenchmarkTest::testDataArgument);
+    }
+
+    private static Arguments testDataArgument(final String line) {
+        final String[] tokens = line.split(", ");
+        final Path path = TEST_DATA_CSV.getParent().resolve("benchmark-data").resolve(tokens[0]);
+
+        final BenchmarkData testData = BenchmarkDataParser.read(path);
+        final int expectedCount = Integer.parseInt(tokens[1]);
+
+        return Arguments.of(testData, expectedCount);
     }
 
     private static void log(Object message) {
         System.out.println(message);
     }
 
-    private static int countContours(final List<ConrecLevel> levels) {
+    private static int numberContours(final List<ConrecLevel> levels) {
         return levels.stream().mapToInt(l -> l.getContours().size()).sum();
     }
 }

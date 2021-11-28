@@ -28,6 +28,7 @@ Execution time on a set of 200+ real-world data ranging from 500K to 4M data poi
 | 20  | 237 | 25s | 36ms | 105ms | 374ms |
 | 50  | 237 | 30s | 36ms | 127ms | 1025ms |
 | 100 | 237 | 34s | 38ms | 229ms | 963ms |
+
 See `BenchmarkTest.java` for more details.
 
 ## TODO
