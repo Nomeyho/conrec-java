@@ -1,4 +1,4 @@
-package io.github.nomeyho.conrec.data;
+package io.github.nomeyho.conrec.benchmark;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -57,7 +57,7 @@ public final class BenchmarkDataParser {
             }
         }
 
-        return new BenchmarkData(x, y, z);
+        return new BenchmarkData(path.getFileName().toString(), x, y, z);
     }
 
 }

@@ -1,20 +1,19 @@
 package io.github.nomeyho.conrec.model;
 
-import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 
-public class Contour implements Serializable {
-    private LinkedList<Point> points; // TODO try to make final, do not modify second contour! 
+public class ConrecContour {
+    private LinkedList<ConrecPoint> points; // TODO try to make final, do not modify second contour! 
     private boolean closed;
 
-    public Contour() {
+    public ConrecContour() {
         points = new LinkedList<>();
         closed = false;
     }
 
-    public void addFirst(final Point point) {
+    public void addFirst(final ConrecPoint point) {
         if (point == null) {
             return;
         }
@@ -22,7 +21,7 @@ public class Contour implements Serializable {
         points.addFirst(point);
     }
 
-    public void addLast(final Point point) {
+    public void addLast(final ConrecPoint point) {
         if (point == null) {
             return;
         }
@@ -31,7 +30,7 @@ public class Contour implements Serializable {
     }
 
     // [1, 2, 3] + [4, 5] => [1, 2, 3, 4, 5]
-    public void merge(final Contour contour) {
+    public void merge(final ConrecContour contour) {
         if (contour == null) {
             return;
         }
@@ -40,13 +39,13 @@ public class Contour implements Serializable {
     }
 
     // [1, 2, 3] + [4, 5] => [1, 2, 3, 5, 4]
-    public void mergeReversed(final Contour contour) {
+    public void mergeReversed(final ConrecContour contour) {
         if (contour == null) {
             return;
         }
         
         final int size = contour.getPoints().size();
-        final ListIterator<Point> it = contour.getPoints().listIterator(size);
+        final ListIterator<ConrecPoint> it = contour.getPoints().listIterator(size);
         
         while (it.hasPrevious()) {
             points.addLast(it.previous());
@@ -54,19 +53,19 @@ public class Contour implements Serializable {
     }
 
     // [1, 2, 3] + [4, 5] => [3, 2, 1, 4, 5]
-    public void reverseAndMerge(final Contour contour) {
+    public void reverseAndMerge(final ConrecContour contour) {
         if (contour == null) {
             return;
         }
 
-        for (final Point point : points) {
+        for (final ConrecPoint point : points) {
             contour.points.addFirst(point);
         }
         
         points = contour.points;
     }
 
-    public Point getStart() {
+    public ConrecPoint getStart() {
         if (points.isEmpty()) {
             return null;
         }
@@ -74,7 +73,7 @@ public class Contour implements Serializable {
         return points.getFirst();
     }
 
-    public Point getEnd() {
+    public ConrecPoint getEnd() {
         if (points.isEmpty()) {
             return null;
         }
@@ -90,7 +89,7 @@ public class Contour implements Serializable {
         this.closed = closed;
     }
 
-    public List<Point> getPoints() {
+    public List<ConrecPoint> getPoints() {
         return points;
     }
 

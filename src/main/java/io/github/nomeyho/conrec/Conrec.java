@@ -1,7 +1,7 @@
 package io.github.nomeyho.conrec;
 
-import io.github.nomeyho.conrec.model.Level;
-import io.github.nomeyho.conrec.model.Point;
+import io.github.nomeyho.conrec.model.ConrecLevel;
+import io.github.nomeyho.conrec.model.ConrecPoint;
 
 import java.util.Arrays;
 import java.util.List;
@@ -34,8 +34,8 @@ public final class Conrec {
      * @param levels contour levels in increasing order
      * @return the computed contours for each level
      */
-    public static List<Level> contour(double[] x, double[] y, double[][] z, double[] levels) {
-        final List<Level> result = initLevels(levels);
+    public static List<ConrecLevel> contour(double[] x, double[] y, double[][] z, double[] levels) {
+        final List<ConrecLevel> result = initLevels(levels);
         int m1, m2, m3;
         int caseValue;
         double dMin, dMax;
@@ -144,8 +144,8 @@ public final class Conrec {
                                     break;
                             }
 
-                            final Point p1 = new Point(x1, y1);
-                            final Point p2 = new Point(x2, y2);
+                            final ConrecPoint p1 = new ConrecPoint(x1, y1);
+                            final ConrecPoint p2 = new ConrecPoint(x2, y2);
                             result.get(k).addSegment(p1, p2);
                         }
                     }
@@ -156,10 +156,10 @@ public final class Conrec {
         return result;
     }
 
-    private static List<Level> initLevels(final double[] levels) {
+    private static List<ConrecLevel> initLevels(final double[] levels) {
         return Arrays.stream(levels)
                 .boxed()
-                .map(Level::new)
+                .map(ConrecLevel::new)
                 .collect(Collectors.toList());
     }
 

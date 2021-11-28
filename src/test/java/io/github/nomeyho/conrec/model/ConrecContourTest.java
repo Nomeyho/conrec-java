@@ -1,17 +1,15 @@
-package io.github.nomeyho.conrec;
+package io.github.nomeyho.conrec.model;
 
-import io.github.nomeyho.conrec.model.Contour;
-import io.github.nomeyho.conrec.model.Point;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class ContourTest {
+class ConrecContourTest {
 
     @Test
     void mergeTest() {
-        final Contour a = a();
-        final Contour b = b();
+        final ConrecContour a = a();
+        final ConrecContour b = b();
 
         a.merge(b);
         assertContourEquals(a, 0, 1, 2, 3, 4);
@@ -19,8 +17,8 @@ class ContourTest {
 
     @Test
     void mergeReversedTest() {
-        final Contour a = a();
-        final Contour b = b();
+        final ConrecContour a = a();
+        final ConrecContour b = b();
 
         a.mergeReversed(b);
         assertContourEquals(a, 0, 1, 2, 4, 3);
@@ -28,29 +26,29 @@ class ContourTest {
 
     @Test
     void reverseAndMergeTest() {
-        final Contour a = a();
-        final Contour b = b();
+        final ConrecContour a = a();
+        final ConrecContour b = b();
 
         a.reverseAndMerge(b);
         assertContourEquals(a, 2, 1, 0, 3, 4);
     }
 
-    private Contour a() {
-        final Contour a = new Contour();
-        a.addLast(new Point(0, 0));
-        a.addLast(new Point(1, 1));
-        a.addLast(new Point(2, 2));
+    private ConrecContour a() {
+        final ConrecContour a = new ConrecContour();
+        a.addLast(new ConrecPoint(0, 0));
+        a.addLast(new ConrecPoint(1, 1));
+        a.addLast(new ConrecPoint(2, 2));
         return a;
     }
 
-    private Contour b() {
-        final Contour b = new Contour();
-        b.addLast(new Point(3, 3));
-        b.addLast(new Point(4, 4));
+    private ConrecContour b() {
+        final ConrecContour b = new ConrecContour();
+        b.addLast(new ConrecPoint(3, 3));
+        b.addLast(new ConrecPoint(4, 4));
         return b;
     }
 
-    private void assertContourEquals(final Contour contour, final double... points) {
+    private void assertContourEquals(final ConrecContour contour, final double... points) {
         assertEquals(points.length, contour.getPoints().size());
 
         for (int i = 0; i < points.length; ++i) {

@@ -2,12 +2,12 @@ package io.github.nomeyho.conrec.model;
 
 import java.util.Objects;
 
-public class Point {
+public class ConrecPoint {
 
     private final double x;
     private final double y;
     
-    public Point(final double x, final double y) {
+    public ConrecPoint(final double x, final double y) {
         this.x = x;
         this.y = y;
     }
@@ -27,11 +27,11 @@ public class Point {
 
     @Override
     public boolean equals(final Object point) {
-        if (!(point instanceof Point)) {
+        if (!(point instanceof ConrecPoint)) {
             return false;
         }
 
-        return x == ((Point) point).x && y == ((Point) point).y;
+        return x == ((ConrecPoint) point).x && y == ((ConrecPoint) point).y;
     }
 
     @Override

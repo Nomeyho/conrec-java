@@ -2,14 +2,14 @@ package io.github.nomeyho.conrec.model;
 
 import java.util.*;
 
-public class Level {
+public class ConrecLevel {
 
     private final double z;
-    private final Set<Contour> contours;
-    private final Map<Point, Contour> contourStarts;
-    private final Map<Point, Contour> contourEnds;
+    private final Set<ConrecContour> contours;
+    private final Map<ConrecPoint, ConrecContour> contourStarts;
+    private final Map<ConrecPoint, ConrecContour> contourEnds;
 
-    public Level(final double z) {
+    public ConrecLevel(final double z) {
         this.z = z;
         this.contours = new HashSet<>();
         this.contourStarts = new HashMap<>();
@@ -20,13 +20,13 @@ public class Level {
         return this.z;
     }
 
-    public List<Contour> getContours() {
+    public List<ConrecContour> getContours() {
         return new ArrayList<>(this.contours);
     }
 
-    public void addSegment(final Point a, final Point b) {
-        Contour contourA = null;
-        Contour contourB = null;
+    public void addSegment(final ConrecPoint a, final ConrecPoint b) {
+        ConrecContour contourA = null;
+        ConrecContour contourB = null;
         boolean prependA = false;
         boolean prependB = false;
 
@@ -57,8 +57,8 @@ public class Level {
         }
     }
 
-    private void addNewContour(final Point a, final Point b) {
-        final Contour contour = new Contour();
+    private void addNewContour(final ConrecPoint a, final ConrecPoint b) {
+        final ConrecContour contour = new ConrecContour();
         contour.addLast(a);
         contour.addLast(b);
         contours.add(contour);
@@ -66,7 +66,7 @@ public class Level {
         contourEnds.put(b, contour);
     }
 
-    private void appendSegment(final Point a, final Point b, final boolean prepend, final Contour contour) {
+    private void appendSegment(final ConrecPoint a, final ConrecPoint b, final boolean prepend, final ConrecContour contour) {
         if (prepend) {
             // b becomes the new start
             contour.addFirst(b);
@@ -80,7 +80,7 @@ public class Level {
         }
     }
 
-    private void mergeContour(final Contour contourA, final Contour contourB, final boolean prependA, final boolean prependB) {
+    private void mergeContour(final ConrecContour contourA, final ConrecContour contourB, final boolean prependA, final boolean prependB) {
         contourStarts.remove(contourA.getStart());
         contourStarts.remove(contourB.getStart());
         contourEnds.remove(contourA.getEnd());
