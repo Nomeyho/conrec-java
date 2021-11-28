@@ -1,15 +1,12 @@
 package io.github.nomeyho.conrec;
 
-import io.github.nomeyho.conrec.model.ConrecLevel;
-import io.github.nomeyho.conrec.model.ConrecPoint;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Adapted from:
- * http://paulbourke.net/papers/conrec/Conrec.java
+ * Implementation of the Conrec Algorithm.
+ * Adapted from: http://paulbourke.net/papers/conrec/Conrec.java
  */
 public final class Conrec {
 

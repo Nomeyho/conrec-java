@@ -1,4 +1,4 @@
-package io.github.nomeyho.conrec.benchmark;
+package io.github.nomeyho.conrec;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;

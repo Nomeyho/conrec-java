@@ -1,7 +1,10 @@
-package io.github.nomeyho.conrec.model;
+package io.github.nomeyho.conrec;
 
 import java.util.Objects;
 
+/**
+ * Represents a point in a 2D space.
+ */
 public class ConrecPoint {
 
     private final double x;

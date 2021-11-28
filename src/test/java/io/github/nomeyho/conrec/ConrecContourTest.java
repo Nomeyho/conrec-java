@@ -1,4 +1,4 @@
-package io.github.nomeyho.conrec.model;
+package io.github.nomeyho.conrec;
 
 import org.junit.jupiter.api.Test;
 

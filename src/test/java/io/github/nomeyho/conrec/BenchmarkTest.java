@@ -1,8 +1,6 @@
-package io.github.nomeyho.conrec.benchmark;
+package io.github.nomeyho.conrec;
 
 import com.google.common.base.Stopwatch;
-import io.github.nomeyho.conrec.Conrec;
-import io.github.nomeyho.conrec.model.ConrecLevel;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -22,7 +20,7 @@ import java.util.stream.Stream;
 class BenchmarkTest {
 
     private static final Path TEST_DATA_DIR = Paths.get("src/test/resources/benchmark-data");
-    private static final int NUMBER_LEVELS = 2;
+    private static final int NUMBER_LEVELS = 20;
     private static LongSummaryStatistics stats;
     private static Stopwatch globalStopwatch;
     private Stopwatch testStopwatch;

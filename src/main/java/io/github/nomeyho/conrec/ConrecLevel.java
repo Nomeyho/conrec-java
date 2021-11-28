@@ -1,7 +1,10 @@
-package io.github.nomeyho.conrec.model;
+package io.github.nomeyho.conrec;
 
 import java.util.*;
 
+/**
+ * Represent an iso-level.
+ */
 public class ConrecLevel {
 
     private final double z;
@@ -9,22 +12,32 @@ public class ConrecLevel {
     private final Map<ConrecPoint, ConrecContour> contourStarts;
     private final Map<ConrecPoint, ConrecContour> contourEnds;
 
-    public ConrecLevel(final double z) {
+    ConrecLevel(final double z) {
         this.z = z;
         this.contours = new HashSet<>();
         this.contourStarts = new HashMap<>();
         this.contourEnds = new HashMap<>();
     }
 
+    /**
+     * Returns the level (or "z" coordinates) associated to the iso-level
+     *
+     * @return the level
+     */
     public double getZ() {
         return this.z;
     }
 
+    /**
+     * Returns the contours computed for this level.
+     *
+     * @return the contours as a list
+     */
     public List<ConrecContour> getContours() {
         return new ArrayList<>(this.contours);
     }
 
-    public void addSegment(final ConrecPoint a, final ConrecPoint b) {
+    void addSegment(final ConrecPoint a, final ConrecPoint b) {
         ConrecContour contourA = null;
         ConrecContour contourB = null;
         boolean prependA = false;
